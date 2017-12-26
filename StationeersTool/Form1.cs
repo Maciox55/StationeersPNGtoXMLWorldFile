@@ -73,7 +73,20 @@ namespace StationeersTool
 
         private void button3_Click(object sender, EventArgs e)
         {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    document.Save(fileDialog.FileName);
 
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Something went wrong!");
+                }
+            }
         }
         public void readXML() {
             root = document.Root;
