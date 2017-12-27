@@ -3,6 +3,8 @@ Tired of placing hundreds of iron frames and welding them to completion? Well, t
 
 Check the project Wiki to learn how to use the program!
 
+Compiled .exe can be found in the Releases tab!
+
 Feel free to contribute to this project, just clone, modify and pull request any new additions you might have worked on!
 Let's make this project a community effort! The program is currently barebones and the original scope of the program is working...sorta...
 
