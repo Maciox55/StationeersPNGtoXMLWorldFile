@@ -1,4 +1,4 @@
-# StationeersPNGtoXMLWorldFile
+# PNG To XML Converter Tool
 Tired of placing hundreds of iron frames and welding them to completion? Well, this simple tool lets you import an image file with the structure painted into your save file! This tool is perfect for those who are trying to setup a role playing server in Stationeers! Lets  you place hundreds of iron frames within seconds.
 
 Check the project Wiki to learn how to use the program!
