@@ -74,6 +74,7 @@ namespace StationeersTool
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "XML File(*.xml)|world.xml";
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
