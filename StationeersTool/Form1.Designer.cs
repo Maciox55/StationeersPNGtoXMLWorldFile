@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.imgUpload = new System.Windows.Forms.Button();
             this.worldFileUpload = new System.Windows.Forms.Button();
             this.saveNewWorldFile = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.processImg = new System.Windows.Forms.Button();
             this.debug1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -48,7 +50,7 @@
             // imgUpload
             // 
             this.imgUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.imgUpload.Location = new System.Drawing.Point(3, 389);
+            this.imgUpload.Location = new System.Drawing.Point(3, 329);
             this.imgUpload.Name = "imgUpload";
             this.imgUpload.Size = new System.Drawing.Size(75, 23);
             this.imgUpload.TabIndex = 0;
@@ -60,7 +62,7 @@
             // worldFileUpload
             // 
             this.worldFileUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.worldFileUpload.Location = new System.Drawing.Point(3, 418);
+            this.worldFileUpload.Location = new System.Drawing.Point(3, 358);
             this.worldFileUpload.Name = "worldFileUpload";
             this.worldFileUpload.Size = new System.Drawing.Size(135, 23);
             this.worldFileUpload.TabIndex = 1;
@@ -83,21 +85,21 @@
             // 
             this.imgFileLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.imgFileLabel.AutoSize = true;
-            this.imgFileLabel.Location = new System.Drawing.Point(84, 394);
+            this.imgFileLabel.Location = new System.Drawing.Point(84, 339);
             this.imgFileLabel.Name = "imgFileLabel";
-            this.imgFileLabel.Size = new System.Drawing.Size(35, 13);
+            this.imgFileLabel.Size = new System.Drawing.Size(94, 13);
             this.imgFileLabel.TabIndex = 3;
-            this.imgFileLabel.Text = "label1";
+            this.imgFileLabel.Text = "Choose PNG file...";
             // 
             // worldDataFileLabel
             // 
             this.worldDataFileLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.worldDataFileLabel.AutoSize = true;
-            this.worldDataFileLabel.Location = new System.Drawing.Point(144, 423);
+            this.worldDataFileLabel.Location = new System.Drawing.Point(144, 368);
             this.worldDataFileLabel.Name = "worldDataFileLabel";
-            this.worldDataFileLabel.Size = new System.Drawing.Size(35, 13);
+            this.worldDataFileLabel.Size = new System.Drawing.Size(99, 13);
             this.worldDataFileLabel.TabIndex = 4;
-            this.worldDataFileLabel.Text = "label2";
+            this.worldDataFileLabel.Text = "Choose Save File...";
             // 
             // pictureBox1
             // 
@@ -164,11 +166,11 @@
             // 
             // processImg
             // 
-            this.processImg.Location = new System.Drawing.Point(292, 310);
+            this.processImg.Location = new System.Drawing.Point(292, 203);
             this.processImg.Name = "processImg";
             this.processImg.Size = new System.Drawing.Size(204, 81);
             this.processImg.TabIndex = 9;
-            this.processImg.Text = "Process";
+            this.processImg.Text = "Convert PNG to XML";
             this.processImg.UseVisualStyleBackColor = true;
             this.processImg.Click += new System.EventHandler(this.processImg_Click);
             // 
@@ -177,15 +179,25 @@
             this.debug1.AutoSize = true;
             this.debug1.Location = new System.Drawing.Point(12, 287);
             this.debug1.Name = "debug1";
-            this.debug1.Size = new System.Drawing.Size(35, 13);
+            this.debug1.Size = new System.Drawing.Size(88, 13);
             this.debug1.TabIndex = 10;
-            this.debug1.Text = "label2";
+            this.debug1.Text = "Detected Frames";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(2, 437);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(494, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "WARNING: THIS WILL OVERWRITE YOUR SAVE FILE! ITS IRREVERISBLE WITHOUT BACKUPS!";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(887, 453);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.debug1);
             this.Controls.Add(this.processImg);
             this.Controls.Add(this.label1);
@@ -197,8 +209,9 @@
             this.Controls.Add(this.saveNewWorldFile);
             this.Controls.Add(this.worldFileUpload);
             this.Controls.Add(this.imgUpload);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "MX|55\'s PNG to Save File Converter";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -220,6 +233,7 @@
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Button processImg;
         private System.Windows.Forms.Label debug1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

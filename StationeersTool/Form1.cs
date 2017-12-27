@@ -84,7 +84,7 @@ namespace StationeersTool
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Something went wrong!");
+                    MessageBox.Show("Something went wrong! Make sure you have the PNG and Save file selected, and you pressed the Process button!");
                 }
             }
         }
