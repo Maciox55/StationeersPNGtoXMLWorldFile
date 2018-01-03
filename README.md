@@ -10,7 +10,16 @@ Let's make this project a community effort! The program is currently barebones a
 
 I intend on working on this project in my spare time.
 
-Things that I might work on next:
-Layering, select many images and layer them to produce entire structures, this is currently partially supported with Z-Index, has to be manually set and new image selected every layer.
-Custom Iron/Steel Frame Color.
+Update 1.01 on 01/02/2018:
+- Added: Layering Support, upload many PNG files to create 3D structures, each file is considered a single layer, make sure you select the files in the actual order that they are supposed to be stacked.
+- Added: Choose between Iron or Steel Structures!
+- Removed: Z-Index offset, was causing problems so I got rid of it for now, all structures should appear starting at y=1
 
+Upcoming:
+- X, Y, Z Offset
+- In-Program Layer Ordering
+
+Down the road:
+ - In-Program drawing and layering
+ - More structure types
+ - Custom Color Support
