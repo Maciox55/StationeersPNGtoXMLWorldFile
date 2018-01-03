@@ -14,15 +14,35 @@ namespace StationeersTool
     public partial class Form1 : Form
     {
         public Image imgFile;
+        public List<Image> imgFiles;
         public XDocument document;
         public int finished, sheet, frame, lastID;
         public long ownerID;
         public XElement root, things, thingsaved;
-        public int x, y;
+        public string structureType;
+        public int x, y, z;
 
         public Form1()
         {
             InitializeComponent();
+            imgFiles = new List<Image>();
+        }
+
+        private void structureTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (structureTypeCombo.SelectedIndex) {
+                case 0:
+                    structureType = "StructureFrameIron";
+                    Console.WriteLine("Frame Iron");
+                    break;
+                case 1:
+                    structureType = "StructureFrame";
+                    Console.WriteLine("Frame Steel");
+                    break;
+                default:
+                    structureType = null;
+                    break;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,14 +52,21 @@ namespace StationeersTool
 
         private void imgUpload_Click(object sender, EventArgs e)
         {
+
             OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp; *.png" ;
-            if ( fileDialog.ShowDialog() == DialogResult.OK) {
+            openFileDialog1.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp; *.png" ;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK) {
+               
                 try
                 {
-                    imgFile = new Bitmap(fileDialog.FileName);
-                    pictureBox1.Image = imgFile;
-                    imgFileLabel.Text = fileDialog.FileName;
+                    for (int i = 0; i < openFileDialog1.FileNames.Length; i++)
+                    {
+                        imgFiles.Add(new Bitmap(openFileDialog1.FileNames[i]));
+                    }
+                    // Console.WriteLine(openFileDialog1.FileName);
+                    //imgFile = new Bitmap(openFileDialog1.FileName);
+                    //pictureBox1.Image = imgFile;
+                    //imgFileLabel.Text = openFileDialog1.FileName;
                     
                 }
                 catch (Exception ex)
@@ -51,18 +78,16 @@ namespace StationeersTool
 
         }
 
- 
-
         private void worldFileUpload_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "XML File(*.xml)|*.xml";
-            if (fileDialog.ShowDialog() == DialogResult.OK)
+            openFileDialog1.Filter = "XML File(*.xml)|*.xml";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    document = XDocument.Load(fileDialog.FileName);
-                    worldDataFileLabel.Text = fileDialog.FileName;
+                    document = XDocument.Load(openFileDialog1.FileName);
+                    worldDataFileLabel.Text = openFileDialog1.FileName;
                 }
                 catch (Exception ex)
                 {
@@ -74,12 +99,12 @@ namespace StationeersTool
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "XML File(*.xml)|world.xml";
-            if (fileDialog.ShowDialog() == DialogResult.OK)
+            openFileDialog1.Filter = "XML File(*.xml)|world.xml";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    document.Save(fileDialog.FileName);
+                    document.Save(openFileDialog1.FileName);
 
 
                 }
@@ -108,14 +133,16 @@ namespace StationeersTool
 
         }
 
-        public void readPixels(Image img)
+        public void readPixels(Image img, int z)
         {
+            x = 0;
+            y = 0;
             lastID++;
             try
             {
-                finished = 0;
-                sheet = 0;
-                frame = 0;
+                //finished = 0;
+                //sheet = 0;
+                //frame = 0;
                 for (int i = 1; i < img.Width+1; i++)
                 {
                     for (int j = 1; j < img.Height+1; j++)
@@ -138,11 +165,11 @@ namespace StationeersTool
                             things.Add(new XElement("ThingSaveData",
                                 new XAttribute(ns + "type","StructureSaveData"),
                                 new XElement("ReferenceId",lastID),
-                                new XElement("PrefabName", "StructureFrameIron"),
+                                new XElement("PrefabName", structureType),
                                 new XElement("CustomName"),
                                 new XElement("WorldPosition",
                                     new XElement("x",x),
-                                    new XElement("y", numericUpDown1.Value),
+                                    new XElement("y", z),
                                     new XElement("z", y)),
                                 new XElement("WorldRotation", 
                                     new XElement("x",0),
@@ -163,6 +190,7 @@ namespace StationeersTool
                                 new XElement("MothershipReferenceId", 0)
                                 ));
                         }
+
                         //1 Sheet Frame
                         if (pixel.R == 85 && pixel.G == 85 && pixel.B == 85)
                         {
@@ -172,11 +200,11 @@ namespace StationeersTool
                             things.Add(new XElement("ThingSaveData",
                                 new XAttribute(ns + "type", "StructureSaveData"),
                                 new XElement("ReferenceId", lastID),
-                                new XElement("PrefabName", "StructureFrameIron"),
+                                new XElement("PrefabName", structureType),
                                 new XElement("CustomName"),
                                 new XElement("WorldPosition",
                                     new XElement("x", x),
-                                    new XElement("y", numericUpDown1.Value),
+                                    new XElement("y", z),
                                     new XElement("z", y)),
                                 new XElement("WorldRotation",
                                     new XElement("x", 0),
@@ -196,10 +224,8 @@ namespace StationeersTool
                                 new XElement("CurrentBuildState", 1),
                                 new XElement("MothershipReferenceId", 0)
                                 ));
-
-
-
                         }
+
                         //Just Frame
                         if (pixel.R == 170 && pixel.G == 170 && pixel.B == 170)
                         {
@@ -209,11 +235,11 @@ namespace StationeersTool
                             things.Add(new XElement("ThingSaveData",
                                 new XAttribute(ns + "type", "StructureSaveData"),
                                 new XElement("ReferenceId", lastID),
-                                new XElement("PrefabName", "StructureFrameIron"),
+                                new XElement("PrefabName", structureType),
                                 new XElement("CustomName"),
                                 new XElement("WorldPosition",
                                     new XElement("x", x),
-                                    new XElement("y", numericUpDown1.Value),
+                                    new XElement("y", z),
                                     new XElement("z", y)),
                                 new XElement("WorldRotation",
                                     new XElement("x", 0),
@@ -234,7 +260,6 @@ namespace StationeersTool
                                 new XElement("MothershipReferenceId", 0)
                                 ));
                         }
-
                     }
                 }
             }
@@ -249,9 +274,17 @@ namespace StationeersTool
 
         private void processImg_Click(object sender, EventArgs e)
         {
-            readXML();
-            readPixels(imgFile);
-            richTextBox1.Text += root;
+            if (imgFiles != null && document != null && structureType != null) {
+                readXML();
+
+                for (int i = 0; i < imgFiles.Count(); i++)
+                {
+                    readPixels(imgFiles[i], (i + (i - 1)));
+                }
+
+                richTextBox1.Text += root;
+            }
+
         }
     }
 }
@@ -281,7 +314,7 @@ namespace StationeersTool
       <States />
       <IsCustomName>false</IsCustomName>
       <CustomColorIndex>-1</CustomColorIndex>
-      <OwnerSteamId>76561198008916569</OwnerSteamId>
+      <OwnerSteamId>****Steam ID****</OwnerSteamId>
       <Reagents />
       <Indestructable>false</Indestructable>
       <CurrentBuildState>2</CurrentBuildState>
