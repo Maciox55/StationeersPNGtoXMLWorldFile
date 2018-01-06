@@ -134,7 +134,7 @@
             0,
             0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
-            99,
+            21,
             0,
             0,
             -2147483648});
