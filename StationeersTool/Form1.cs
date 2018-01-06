@@ -279,7 +279,9 @@ namespace StationeersTool
 
                 for (int i = 0; i < imgFiles.Count(); i++)
                 {
-                    readPixels(imgFiles[i], (i + (i - 1)));
+                    int y = (i + (i - 1)) + (int)numericUpDown1.Value + 1;
+                    Console.WriteLine(y);
+                    readPixels(imgFiles[i], y);
                 }
 
                 richTextBox1.Text += root;
