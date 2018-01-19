@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -13,19 +14,45 @@ namespace StationeersTool
 {
     public partial class Form1 : Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
+
+        [DllImport("User32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("User32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
         public Image imgFile;
         public List<Image> imgFiles;
+        public List<PictureBox> picBoxes;
         public XDocument document;
         public int finished, sheet, frame, lastID;
         public long ownerID;
         public XElement root, things, thingsaved;
         public string structureType;
         public int x, y, z;
-
+        public Button addLayerButton;
         public Form1()
         {
             InitializeComponent();
             imgFiles = new List<Image>();
+            picBoxes = new List<PictureBox>();
+            addLayerButton = new Button();
+            addLayerButton.Parent = layerPanel;
+            addLayerButton.Text = "+ \n Add Layer";
+            addLayerButton.Height = layerPanel.Height;
+            addLayerButton.FlatStyle = 0;
+            addLayerButton.Click += new EventHandler(imgUpload_Click);
+
+        }
+        private void panel4_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            }
         }
 
         private void structureTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -45,6 +72,11 @@ namespace StationeersTool
             }
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -59,9 +91,30 @@ namespace StationeersTool
                
                 try
                 {
+                    imgFileLabel.Text = "";
+                    int prevX = layerPanel.Width / openFileDialog1.FileNames.Length;
                     for (int i = 0; i < openFileDialog1.FileNames.Length; i++)
                     {
                         imgFiles.Add(new Bitmap(openFileDialog1.FileNames[i]));
+                        imgFileLabel.Text += openFileDialog1.SafeFileNames[i]+", ";
+
+                        PictureBox picBox = new PictureBox();
+                        picBox.Left = prevX;
+                        picBox.Top = (layerPanel.Height / 2) - (picBox.Height / 2);
+                        picBox.Image = imgFiles[i];
+                        picBox.Parent = layerPanel;
+                        picBox.Click += new EventHandler(testEvent);
+
+
+                        Label layerLabel = new Label();
+                        layerLabel.Top = layerPanel.Height/2;
+                        layerLabel.Text = openFileDialog1.SafeFileNames[i];
+                        layerLabel.Parent = picBox;
+                        layerLabel.BackColor = Color.Transparent;
+                        layerLabel.ForeColor = debug1.ForeColor;
+                        layerLabel.Font = new Font("Roboto", 10);
+                        
+                        prevX += picBox.Width;
                     }
                     // Console.WriteLine(openFileDialog1.FileName);
                     //imgFile = new Bitmap(openFileDialog1.FileName);
@@ -87,7 +140,7 @@ namespace StationeersTool
                 try
                 {
                     document = XDocument.Load(openFileDialog1.FileName);
-                    worldDataFileLabel.Text = openFileDialog1.FileName;
+                    worldDataFileLabel.Text = openFileDialog1.SafeFileName;
                 }
                 catch (Exception ex)
                 {
@@ -98,13 +151,13 @@ namespace StationeersTool
 
         private void button3_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            openFileDialog1.Filter = "XML File(*.xml)|world.xml";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.Filter = "XML File(*.xml)|world.xml";
+            if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    document.Save(openFileDialog1.FileName);
+                    document.Save(fileDialog.FileName);
 
 
                 }
@@ -120,17 +173,7 @@ namespace StationeersTool
             thingsaved = things.Elements("ThingSaveData").Last();
 
             lastID = Int32.Parse(thingsaved.Elements("ReferenceId").First().Value);
-            ownerID = Int64.Parse(thingsaved.Elements("OwnerSteamId").First().Value);
-
-
-
-            //things.Add(new XElement("ThingSaveData"));
-
-            //foreach (var thing in root) {
-            //richTextBox1.Text += root;
-            //}
-            //var structures = from things in root.Elements("Things") where (string)things.Element("ThingSaveData") select things;
-
+            ownerID = Int64.Parse(thingsaved.Elements("OwnerSteamId").First().Value);         
         }
 
         public void readPixels(Image img, int z)
@@ -274,11 +317,13 @@ namespace StationeersTool
 
         private void processImg_Click(object sender, EventArgs e)
         {
-            if (imgFiles != null && document != null && structureType != null) {
+            if (imgFiles != null && document != null && structureType != null)
+            {
                 readXML();
 
                 for (int i = 0; i < imgFiles.Count(); i++)
                 {
+
                     int y = (i + (i - 1)) + (int)numericUpDown1.Value + 1;
                     Console.WriteLine(y);
                     readPixels(imgFiles[i], y);
@@ -288,6 +333,13 @@ namespace StationeersTool
             }
 
         }
+        void testEvent(object sender, EventArgs e) {
+            PictureBox pictureBox = (PictureBox)sender;
+            pictureBox1.Image = pictureBox.Image;
+            Console.WriteLine("Clicked on: " + pictureBox.Name);
+        }
+
+
     }
 }
 
